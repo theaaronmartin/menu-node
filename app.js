@@ -1,8 +1,13 @@
 const express = require('express'),
           logger = require('morgan'),
-          bodyParser = require('body-parser');
+          bodyParser = require('body-parser'),
+          mongoose = require('mongoose');
 
 const app = express();
+
+// Database
+
+mongoose.connect('mongodb://localhost/menu-node');
 
 // Middleware
 app.use(logger('dev'));
