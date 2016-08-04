@@ -5,21 +5,33 @@ const router = express.Router();
 
 router.post('/', function (req, res) {
   var menu = new Menu(req.body);
-  menu.save();
-
-  res.send(post);
+  menu.save(function(err) {
+    res.send(menu);
+  });
 });
 
 router.get('/', function(req, res) {
-  var menus = Menu.all();
-
-  res.json(menus);
+  Menu.find({}, function(err, menus) {
+    res.json(menus);
+  });
 });
 
 router.get('/:id', function(req, res) {
-  var menu = Menu.find(req.params.id);
+  Menu.findById(req.params.id, function (err, menu) {
+    res.json(menu);
+  });
+});
 
-  res.json(menu);
-})
+router.patch('/:id', function(req, res) {
+  Menu.findOneAndUpdate({ _id: req.params.id}, req.body, {new: true }, function (err, menu) {
+    res.json(menu);
+  });
+});
+
+router.delete('/:id', function(req, res) {
+  Menu.findOneAndRemove({ _id: req.params.id}, function (err, menu) {
+    res.json(true);
+  });
+});
 
 module.exports = router;
